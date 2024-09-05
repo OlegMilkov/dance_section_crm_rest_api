@@ -45,6 +45,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/updateChild").hasRole("HR")
                         .requestMatchers("/deleteChild").hasRole("MANAGER")
                         .requestMatchers("/addNewChild").hasAnyRole("MANAGER", "HR")
