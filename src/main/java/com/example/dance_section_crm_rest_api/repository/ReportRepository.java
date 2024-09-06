@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Child, Integer> {
-
     List<Child> findAllByHealthCertificateOrFormOrSafetyRulesOrBirthCertificate(String healthCertificate, String form, String safetyRules, String birthCertificate);
 
     List<Child> findAllByGroupName(String groupName);
