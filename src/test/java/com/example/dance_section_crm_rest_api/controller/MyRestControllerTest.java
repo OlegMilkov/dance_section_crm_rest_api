@@ -16,8 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -76,11 +75,11 @@ class MyRestControllerTest {
 
     @Test
     void updateChild() {
-        Child childToUpdate= testChild;
-         Child updateChild= myRestController.updateChild(childToUpdate);
+        Child childToUpdate = testChild;
+        Child updateChild = myRestController.updateChild(childToUpdate);
 
-         verify(reportService).saveChild(childToUpdate);
-         assertEquals(childToUpdate,updateChild);
+        verify(reportService).saveChild(childToUpdate);
+        assertEquals(childToUpdate, updateChild);
     }
 
     @Test
@@ -140,7 +139,7 @@ class MyRestControllerTest {
 
     @Test
     void getNumberOfChildrenInEachGroup() {
-        int expectedCount=10;
+        int expectedCount = 10;
         String groupName = "Group A";
         String expectedMessage = "Кількість дітей  у группі " + groupName + ": " + expectedCount;
 
@@ -149,7 +148,7 @@ class MyRestControllerTest {
         ResponseEntity<String> responseEntity = myRestController.getNumberOfChildrenInEachGroup(groupName);
         verify(reportService).getNumberOfChildrenInEachGroup(groupName);
 
-        assertEquals(expectedMessage,responseEntity.getBody());
+        assertEquals(expectedMessage, responseEntity.getBody());
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
     }
@@ -162,26 +161,26 @@ class MyRestControllerTest {
 
         when(reportService.getAllDebtors()).thenReturn(expectedDebtors);
 
-        List<Child>actualDebtors =myRestController.getAllDebtors();
+        List<Child> actualDebtors = myRestController.getAllDebtors();
 
         verify(reportService).getAllDebtors();
 
-        assertEquals(expectedDebtors,actualDebtors );
+        assertEquals(expectedDebtors, actualDebtors);
     }
 
     @Test
     void getChildrenByName() {
-        String name="Olivia";
-        List<Child>expectedByName= new ArrayList<>();
+        String name = "Olivia";
+        List<Child> expectedByName = new ArrayList<>();
         expectedByName.add(testChild);
         expectedByName.add(testChild);
 
         when(reportService.getChildrenByName(name)).thenReturn(expectedByName);
 
-        List <Child>actualChildren =myRestController.getChildrenByName(name);
+        List<Child> actualChildren = myRestController.getChildrenByName(name);
 
         verify(reportService).getChildrenByName(name);
-        assertEquals(expectedByName,actualChildren );
+        assertEquals(expectedByName, actualChildren);
 
 
         // Add implementation
@@ -191,49 +190,78 @@ class MyRestControllerTest {
     void getAllDistinctGroupNames() {
 
 
-        List <String> expectedGroupName= new ArrayList<>();
+        List<String> expectedGroupName = new ArrayList<>();
         expectedGroupName.add("1Pro");
         expectedGroupName.add("2Pro");
         expectedGroupName.add("3Pro");
 
         when(reportService.getAllDistinctGroupNames()).thenReturn(expectedGroupName);
 
-        List<String>actualGroupName= myRestController.getAllDistinctGroupNames();
+        List<String> actualGroupName = myRestController.getAllDistinctGroupNames();
 
         verify(reportService).getAllDistinctGroupNames();
 
-        assertEquals(expectedGroupName,actualGroupName);
+        assertEquals(expectedGroupName, actualGroupName);
 
         // Add implementation
     }
 
     @Test
-    void getAllChildrenSortedByAsc() {
-        List<Child>sortedByAsc= new ArrayList<>();
-        sortedByAsc.add(testChild);
-        sortedByAsc.add(testChild);
+    void getAllChildrenSortedByAsc_whenEmptyList() {
+        // Arrange: Налаштовуємо, щоб сервіс повертав порожній список
+        List<Child> emptyList = new ArrayList<>();
+        when(reportService.getAllChildrenSortedByGroupAsc()).thenReturn(emptyList);
 
-        when(reportService.getAllChildrenSortedByGroupAsc()).thenReturn(sortedByAsc);
+        // Act: Викликаємо метод контролера
+        List<Child> actualList = myRestController.getAllChildrenSortedByAsc();
 
-        List<Child>expectedSortedByAsc=myRestController.getAllChildrenSortedByAsc();
-
+        // Assert: Перевіряємо, що сервіс викликаний і результат порожній
         verify(reportService).getAllChildrenSortedByGroupAsc();
+        assertEquals(emptyList, actualList);
+    }
 
-        assertEquals(sortedByAsc,expectedSortedByAsc);
-        // Add implementation
+
+    @Test
+    void getAllChildrenSortedByAsc_whenNullReturned() {
+        // Arrange: Налаштовуємо, щоб сервіс повертав null
+        when(reportService.getAllChildrenSortedByGroupAsc()).thenReturn(null);
+
+        // Act & Assert: Перевіряємо, що виникає NullPointerException або обробка null
+        assertThrows(NullPointerException.class, () -> {
+            myRestController.getAllChildrenSortedByAsc();
+        });
+
+        // Перевіряємо, що метод сервісу був викликаний
+        verify(reportService).getAllChildrenSortedByGroupAsc();
+    }
+
+
+    @Test
+    void getAllChildrenSortedByDesc_whenEmptyList() {
+        // Arrange: Налаштовуємо, щоб сервіс повертав порожній список
+        List<Child> emptyList = new ArrayList<>();
+        when(reportService.getAllChildrenSortedByGroupDesc()).thenReturn(emptyList);
+
+        // Act: Викликаємо метод контролера
+        List<Child> actualList = myRestController.getAllChildrenSortedByDesc();
+
+        // Assert: Перевіряємо, що сервіс викликаний і результат порожній
+        verify(reportService).getAllChildrenSortedByGroupDesc();
+        assertEquals(emptyList, actualList);
     }
 
     @Test
-    void getAllChildrenSortedByDesc() {
-        List<Child>sortedByDesc= new ArrayList<>();
-        sortedByDesc.add(testChild);
-        sortedByDesc.add(testChild);
+    void getAllChildrenSortedByDesc_whenNullReturned() {
+        // Arrange: Налаштовуємо, щоб сервіс повертав null
+        when(reportService.getAllChildrenSortedByGroupDesc()).thenReturn(null);
 
-        when(reportService.getAllChildrenSortedByGroupDesc()).thenReturn(sortedByDesc);
+        // Act & Assert: Перевіряємо, що виникає NullPointerException або обробка null
+        assertThrows(NullPointerException.class, () -> {
+            myRestController.getAllChildrenSortedByDesc();
+        });
 
-        List<Child>expectedSortedByDesc=myRestController.getAllChildrenSortedByDesc();
-
+        // Перевіряємо, що метод сервісу був викликаний
         verify(reportService).getAllChildrenSortedByGroupDesc();
+    }
 
-        assertEquals(sortedByDesc,expectedSortedByDesc);    }
 }
