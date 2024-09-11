@@ -92,12 +92,18 @@ public class MyRestController {
     @GetMapping("/children/sort/asc")
     public List<Child> getAllChildrenSortedByAsc() {
         List<Child> allChildren = reportService.getAllChildrenSortedByGroupAsc();
+        if (allChildren == null) {
+            throw new NullPointerException("Children list is null");
+        }
         return allChildren;
     }
 
     @GetMapping("/children/sort/desc")
     public List<Child> getAllChildrenSortedByDesc() {
         List<Child> allChildren = reportService.getAllChildrenSortedByGroupDesc();
+        if (allChildren == null) {
+            throw new NullPointerException("Children list is null");
+        }
         return allChildren;
     }
 }
