@@ -145,11 +145,10 @@ class MyRestControllerTest {
 
         when(reportService.getNumberOfChildrenInEachGroup(groupName)).thenReturn(expectedCount);
 
-        ResponseEntity<String> responseEntity = myRestController.getNumberOfChildrenInEachGroup(groupName);
+        String responseEntity = myRestController.getNumberOfChildrenInEachGroup(groupName);
         verify(reportService).getNumberOfChildrenInEachGroup(groupName);
 
-        assertEquals(expectedMessage, responseEntity.getBody());
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedMessage, responseEntity);
 
     }
 

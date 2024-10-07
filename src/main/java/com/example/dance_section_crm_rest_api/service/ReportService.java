@@ -2,10 +2,12 @@ package com.example.dance_section_crm_rest_api.service;
 
 
 import com.example.dance_section_crm_rest_api.entity.Child;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 public interface ReportService {
+
     public List<Child> getAllChildren();
 
     public List<Child> getAllDebtors();

@@ -26,11 +26,7 @@ public class MyRestController {
 
     @GetMapping("/children/{id}")
     public Child getChild(@PathVariable int id) {
-        Child child = reportService.getChild(id);
-        if (child == null) {
-            throw new NoSuchChildException("There is no Child with " + id + " in our Database");
-        }
-        return child;
+        return reportService.getChild(id);
     }
 
     @PostMapping("/children")
@@ -48,10 +44,6 @@ public class MyRestController {
 
     @DeleteMapping("/children/{id}")
     public String deleteChild(@PathVariable int id) {
-        Child child = reportService.getChild(id);
-        if (child == null) {
-            throw new NoSuchChildException("There is no Child with" + id + " in our Database");
-        }
         reportService.deleteChild(id);
         return "Child with ID =" + id + " was deleted";
     }
@@ -63,11 +55,10 @@ public class MyRestController {
     }
 
     @GetMapping("/countByGroup/{group_name}")
-    public ResponseEntity<String> getNumberOfChildrenInEachGroup(@PathVariable String group_name) {
+    public String getNumberOfChildrenInEachGroup(@PathVariable String group_name) {
         int count = reportService.getNumberOfChildrenInEachGroup(group_name);
         String message = "Кількість дітей  у группі " + group_name + ": " + count;
-
-        return ResponseEntity.ok(message);
+        return message;
     }
 
     @GetMapping("/children/debtors")

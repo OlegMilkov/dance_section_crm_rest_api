@@ -1,6 +1,7 @@
 package com.example.dance_section_crm_rest_api.service;
 
 import com.example.dance_section_crm_rest_api.entity.Child;
+import com.example.dance_section_crm_rest_api.exeption_handling.NoSuchChildException;
 import com.example.dance_section_crm_rest_api.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,14 +39,16 @@ public class ReportServiceImpl implements ReportService {
     @Override
     @Transactional
     public Child getChild(int id) {
-        return reportRepository.findById(id).orElse(null);
+        return reportRepository.findById(id) .orElseThrow(() -> new NoSuchChildException("There is no Child with " + id + " in our Database"));
     }
 
 
     @Override
     @Transactional
     public void deleteChild(int id) {
-        reportRepository.deleteById(id);
+        Child child = reportRepository.findById(id)
+                .orElseThrow(() -> new NoSuchChildException("There is no Child with " + id + " in our Database"));
+        reportRepository.delete(child);
     }
 
     @Override
