@@ -1,9 +1,10 @@
 package com.example.dance_section_crm_rest_api.controller;
 
 import com.example.dance_section_crm_rest_api.entity.Child;
-import com.example.dance_section_crm_rest_api.exeption_handling.NoSuchChildException;
 import com.example.dance_section_crm_rest_api.service.ReportService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +31,14 @@ public class MyRestController {
     }
 
     @PostMapping("/children")
-    public Child addNewChild(@RequestBody Child child) {
+    public Child addNewChild( @Valid @RequestBody  Child child) {
         reportService.saveChild(child);
         return child;
     }
 
     @PutMapping("/children")
     @PreAuthorize("hasRole('HR')")
-    public Child updateChild(@RequestBody Child child) {
+    public Child updateChild( @Valid @RequestBody Child child) {
         reportService.saveChild(child);
         return child;
     }
