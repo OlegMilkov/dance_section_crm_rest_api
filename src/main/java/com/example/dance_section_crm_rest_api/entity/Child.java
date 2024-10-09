@@ -1,6 +1,8 @@
 package com.example.dance_section_crm_rest_api.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 
 import java.time.LocalDate;
@@ -12,15 +14,22 @@ public class Child {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+
     @Column(name = "name")
+    @Size(min = 3, message = "Ім'я повинно містити не менше 3 символів")
     private String name;
+
+    @Size(min = 3, message = "Фамілія повинна містити не менше 3 символів")
     @Column(name = "surname")
     private String surname;
+
     @Column(name = "group name")
+    @NotEmpty(message = "Поле повинно бути заповнене")
     private String groupName;
+
     @Column(name = "birthday")
     private LocalDate birthday;
-    @Column(name = "health certificate")
+    @Column(name = "health_certificate")
     private String healthCertificate;
     @Column(name = "form")
     private String form;

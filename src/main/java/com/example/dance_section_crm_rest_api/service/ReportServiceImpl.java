@@ -6,6 +6,7 @@ import com.example.dance_section_crm_rest_api.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,8 +32,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Transactional
-    public void saveChild(Child child) {
+    public Child saveChild(Child child) {
         reportRepository.save(child);
+        return child;
     }
 
 
@@ -73,7 +75,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Transactional
-    public List<String>getAllDistinctGroupNames(){
+    public List<String> getAllDistinctGroupNames() {
         return reportRepository.findAllDistinctGroupNames();
     }
 
